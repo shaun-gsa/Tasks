@@ -4,6 +4,7 @@ import se.edu.streamdemo.data.Datamanager;
 import se.edu.streamdemo.task.Deadline;
 import se.edu.streamdemo.task.Task;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Main {
@@ -16,11 +17,14 @@ public class Main {
 
         System.out.println("Printing all data ...");
         printAllData(tasksData);
+        printDataUsingStreams(tasksData);
 
         System.out.println("Printing deadlines ...");
         printDeadlines(tasksData);
+        printDeadlineUsingStreams(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        System.out.println("Total number of deadlines: " + countDeadlinesUsingStreams(tasksData));
 
     }
 
@@ -44,6 +48,11 @@ public class Main {
         }
     }
 
+    public static void printDataUsingStreams(ArrayList<Task> tasks) {
+        tasks.stream()
+                .forEach(System.out::println);
+    }
+
     public static void printDeadlines(ArrayList<Task> tasksData) {
         for (Task t : tasksData) {
             if (t instanceof Deadline) {
@@ -52,4 +61,16 @@ public class Main {
         }
     }
 
+    public static void printDeadlineUsingStreams(ArrayList<Task> tasks) {
+        tasks.stream()
+                .filter((t) -> t instanceof Deadline)
+                .forEach(System.out::println);
+    }
+
+    private static int countDeadlinesUsingStreams(ArrayList<Task> tasks) {
+        int count = (int)tasks.stream()
+                .filter((t) -> t instanceof Deadline)
+                .count();
+        return count;
+    }
 }
